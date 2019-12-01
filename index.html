@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="app">
-        <p>{{ status }}</p>
+      <p>{{ status }}</p>
     </div>
-</body>
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data: {
+          status: ""
+        },
+        created: function() {
+          this.loadQuote();
+        },
+        methods: {
+          loadQuote: function() {
+            this.status = "Loading...";
+            var vm = this;
+            axios
+              .get("http://ron-swanson-quotes.herokuapp.com/v2/quotes")
+              .then(function(response) {
+                vm.status = response.data[0];
+              })
+              .catch(function(error) {
+                vm.status = "An error occured." + error;
+              });
+          }
+        }
+      });
+    </script>
+  </body>
 </html>
